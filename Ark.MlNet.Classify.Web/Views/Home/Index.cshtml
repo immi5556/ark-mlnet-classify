@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>Immanuel : Text Classify</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="Immanuel developer, ml.net text classifucation, SdcaMultiClassTrainer, OVAAveragedPerceptronTrainer" />
+    <meta name="keywords" content="Immanuel Raj, developer, programmer, c#, javascript, key value pair store, open source contributor" />
+    <meta name="robots" content="index, follow" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="identifier-url" content="https://www.immanuel.co" />
+    <meta name="Language" content="en, en-us, en-gb, en-bz, en-za" />
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+    <link rel="shortcut icon" type="image/png" href="https://immanuel.co/favicon.ico" />
+    <script src="https://cdn.jsdelivr.net/npm/ark-js-util@latest/ark-util.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ark-fetch-api@latest/ark-api.js"></script>
+</head>
+<body>
+    <div>
+        <textarea id="txtI" style="width:100%;" rows="5" placeholder="paste your content (max: 3mb), each line will be considered as text that you can tag"></textarea>
+        <br /><br />
+        <button id="load">Load Data</button>
+    </div>
+    <div id="load-content">
+    </div>
+    <script>
+        var btnload = document.getElementById("load");
+        var txt = document.getElementById("txtI");
+        var load = document.getElementById("load-content");
+        btnload.addEventListener("click", (evt) => {
+            //console.log(txt.value);
+            if (!txt.value) {
+                alert('enter some training content in the textarea');
+                return;
+            }
+            var lines = (txt.value || '').split(/\r?\n|\r|\n/g);
+            load.innerHTML = '';
+            var bild = `<table style='width:100%;text-align: left;'>
+                                    <caption>Immanuel's Experiment for Classification</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Text</th>
+                                            <th>Tag</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id='tbl-cont'></tbody></table>`;
+            load.appendChild(ark_util.textToDom(bild));
+            var cont = document.getElementById('tbl-cont');
+            lines.forEach(t => {
+                if (t) {
+                    cont.appendChild(ark_util.textToDom(`<tr><td>${t}</td><td><input type='text'></td></tr>`))
+                }
+            });
+            load.appendChild(ark_util.textToDom(`<input type='text' id='mdl-name' placeholder='model name' />`));
+            load.appendChild(ark_util.textToDom(`<button id='start-train'>Start Training</button>`));
+            var train = document.getElementById("start-train");
+            train.addEventListener("click", (evt) => {
+                evt.preventDefault();
+                var dd = [...cont.querySelectorAll('tr')].map(t => {
+                    return { Text: t.querySelector('td:nth-child(1)').innerHTML, Tag: t.querySelector('td:nth-child(2) input').value }
+                })
+                console.log(dd);
+                var mdlname = document.getElementById("mdl-name");
+                api.postJson(`/ark/class/${mdlname.value}`, dd);
+            })
+        });
+    </script>
+</body>
+</html>
