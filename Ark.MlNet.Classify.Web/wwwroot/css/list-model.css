@@ -1,0 +1,216 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+
+.text-text-1 {
+    color: #121212;
+}
+
+.text-text-2 {
+    color: #555555;
+}
+
+.text-text-3 {
+    color: #777777;
+}
+
+.text-primary-1 {
+    color: #245953;
+}
+
+.text-primary-3 {
+    color: #d9e8e9;
+}
+
+.text-primary-2 {
+    color: #a0c7c8;
+}
+
+.bg-primary-1 {
+    background: #245953;
+}
+
+.bg-primary-3 {
+    background: #d9e8e9;
+}
+
+.bg-primary-2 {
+    background: #a0c7c8;
+}
+
+.text-secondary-1 {
+    color: #cd8484;
+}
+
+.text-secondary-2 {
+    color: #e49393;
+}
+
+.text-secondary-3 {
+    color: #f2c9c9;
+}
+
+.bg-secondary-1 {
+    background: #cd8484;
+}
+
+.bg-secondary-2 {
+    background: #e49393;
+}
+
+.bg-secondary-3 {
+    background: #f2c9c9;
+}
+
+.fill-primary-5 {
+    fill: #a0c7c8;
+}
+
+svg {
+    fill: #245953;
+}
+
+.text-caption {
+    font-size: 0.7rem;
+    color: #777777;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h2 {
+    font-size: 1.3rem;
+    line-height: 1.7rem;
+}
+
+p {
+    font-size: 1.25rem;
+    color: #555555;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: "Space Grotesk", sans-serif;
+}
+
+body {
+    background: #ecf4f4;
+}
+
+.layer {
+    background: #408e91;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 24px;
+    padding: 8px;
+    box-shadow: 0 50px 0px 0px #245953;
+    display: grid;
+    width: 600px;
+    gap: 8px;
+    transition: transform 0.5s cubic-bezier(0.5, 1.05, 0.5, 1.05);
+    transform: translateX(-50%) translateY(-50%) perspective(200px) rotateX(1deg);
+}
+
+    .layer > div {
+        padding: 12px;
+        background: #ecf4f4;
+        border-radius: 16px;
+    }
+
+        .layer > div h2 {
+            margin-bottom: 8px;
+        }
+
+.layer-2 {
+    grid-auto-columns: 1fr 1fr 1fr;
+    grid-template-areas: "exercises exercises bests" "activity activity activity";
+}
+
+    .layer-2 .exercise-table {
+        grid-area: exercises;
+    }
+
+    .layer-2 .personal-bests {
+        grid-area: bests;
+    }
+
+    .layer-2 .activity-feed {
+        grid-area: activity;
+    }
+
+.layer-1 {
+    margin-top: -45px;
+    grid-auto-columns: 1fr 1fr 1fr;
+    grid-template-areas: "header header header" "schedule schedule calories" "schedule schedule challenges";
+}
+
+    .layer-1 .profile {
+        padding: 24px 12px;
+        grid-area: header;
+    }
+
+        .layer-1 .profile > h2 {
+            margin-bottom: 8px;
+            font-size: 2.5rem;
+            line-height: 2.5rem;
+        }
+
+    .layer-1 .schedule-table {
+        grid-area: schedule;
+    }
+
+    .layer-1 .calories {
+        grid-area: calories;
+    }
+
+    .layer-1 .challenges {
+        grid-area: challenges;
+    }
+
+.snap-x {
+    -ms-scroll-snap-type: x var(--tw-scroll-snap-strictness);
+    scroll-snap-type: x var(--tw-scroll-snap-strictness);
+}
+
+.snap-mandatory {
+    --tw-scroll-snap-strictness: mandatory;
+}
+
+.snap-start {
+    scroll-snap-align: start;
+}
+
+.content {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+    .content::-webkit-scrollbar {
+        display: none;
+    }
+
+.content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#chevron {
+    transition: transform 0.3s ease-in-out;
+}
+
+#toggle[aria-pressed=false] #chevron {
+    transform: rotate(0deg);
+}
+
+#toggle[aria-pressed=false] ~ .layer-1 {
+    transform: translateX(-50%) translateY(-50%) perspective(200px) rotateX(1deg);
+}
+
+#toggle[aria-pressed=true] #chevron {
+    transform: rotate(180deg);
+}
+
+#toggle[aria-pressed=true] ~ .layer-1 {
+    transform: translateX(-50%) translateY(-155%) perspective(200px) rotateX(1deg);
+}

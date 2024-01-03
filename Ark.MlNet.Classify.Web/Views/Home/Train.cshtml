@@ -1,0 +1,314 @@
+﻿@{
+    Layout = null;
+}
+<html>
+<head>
+    <link href="~/css/train.css" rel="stylesheet" />
+    <title>Train: Text-Classify (Immanuel R - ARK)</title>
+    <meta name="description" content="Immanuel developer, ml.net text classification, SdcaMultiClassTrainer, OVAAveragedPerceptronTrainer" />
+    <meta name="keywords" content="Immanuel Raj, developer, programmer, c#, javascript, open source contributor" />
+    <meta name="robots" content="index, follow" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="identifier-url" content="https://www.immanuel.co" />
+    <meta name="Language" content="en, en-us, en-gb, en-bz, en-za" />
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+    <link rel="shortcut icon" type="image/png" href="https://immanuel.co/favicon.ico" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ark-js-util@latest/ark-util.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ark-fetch-api@latest/ark-api.js"></script>
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
+</head>
+<body>
+    <main>
+        <header id="app-header" class="app-header">
+
+            <div class="background-container">
+                <div id="background-back" class="background"></div>
+                <div id="background-front" class="background"></div>
+            </div>
+
+            <div class="header-content">
+                <div id="small-toolbar" class="app-toolbar">
+
+                    <div class="icon-button" style="display:none;">
+                        <div class="icon">
+                            <i class="material-icons">menu</i>
+                        </div>
+                    </div>
+
+                    <div id="small-title" class="small-title">Text Classify - Test</div>
+                    <div class="icon-button" style="display:none;">
+                        <div class="icon">
+                            <i class="material-icons">search</i>
+                        </div>
+                    </div>
+
+                    <div class="icon-button" style="display:none;">
+                        <div class="icon">
+                            <i class="material-icons">more_vert</i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="large-toolbar" class="app-toolbar tall">
+                    <div id="large-title" class="large-title">
+                        Text Classify - Train and Test
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="card">
+
+            <div class="card-title">Train & Generate Model </div>
+
+            <p style="font-weight:bold;">Step 1: Paste your training data below (size < 3mb)</p>
+            <p>
+                <textarea id="txtI" style="width:100%;" rows="5" placeholder="paste your trainng data (max: 3mb), each line will be considered as text that you can tag"></textarea>
+            </p>
+
+            <p>* each line will be considered as a line item as a training dataset</p>
+
+            <p style="text-align:center;">
+                <button style="height:40px; width: 50%;" id="load">Load Data</button>
+            </p>
+
+            <p>
+                <div id="load-content">
+                </div>
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-title">Pre Trained Models</div>
+
+            <p>
+                <div class="container">
+                    <div class="well well-sm" style="display:none;">
+                        <strong>Display</strong>
+                        <div class="btn-group">
+                            <a href="#" id="list" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-th-list">
+                                </span>List
+                            </a> <a href="#" id="grid" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-th"></span>Grid
+                            </a>
+                        </div>
+                    </div>
+                    <div id="products" class="row list-group">
+                        @foreach (var v in ViewBag.dics)
+                        {
+                            <div class="item  col-xs-4 col-lg-4">
+                                <div class="thumbnail">
+                                    <div class="caption">
+                                        <h4 class="group inner list-group-item-heading">
+                                            @v.Value.model_name
+                                        </h4>
+                                        <p class="row">
+                                            <input class="test-text" type="text" style="height:40px; width:100%;" placeholder="Enter text to test" />
+                                        </p>
+                                        <input class="model-path" type="hidden" value="@v.Value.model_path" />
+                                        <input class="tag-path" type="hidden" value="@v.Value.tag_path" />
+                                        <div class="row" style="text-align:center;">
+                                            @v.Value.tag
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6">
+                                                <p class="lead">
+
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-12 col-md-6">
+                                                <a class="btn btn-success btn-check" href="javascript:void(0);">Check</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </p>
+
+
+        </div>
+    </main>
+    <script>
+
+        TweenLite.defaultEase = Linear.easeNone;
+
+        var header = document.querySelector("#app-header");
+        var bgBack = document.querySelector("#background-back");
+        var bgFront = document.querySelector("#background-front");
+        var toolbar = document.querySelector("#small-toolbar");
+        var largeTitle = document.querySelector("#large-title");
+        var smallTitle = document.querySelector("#small-title");
+
+        var deltaHeight = header.offsetHeight - toolbar.offsetHeight;
+
+        var rect1 = smallTitle.getBoundingClientRect();
+        var rect2 = largeTitle.getBoundingClientRect();
+
+        var scale = rect1.height / rect2.height;
+        var x = rect1.left - rect2.left;
+        var y = rect1.top - rect2.top;
+
+        var headerAnimation = new TimelineLite({ paused: true })
+            .to(largeTitle, 1, { scale: scale, x: x, y: deltaHeight + y }, 0)
+            .to(header, 1, { y: -deltaHeight }, 0)
+            .to(toolbar, 1, { y: deltaHeight }, 0)
+            .to(bgBack, 1, { y: deltaHeight / 2 }, 0)
+            .to(bgFront, 1, { y: deltaHeight / 2 }, 0)
+            .to(bgBack, 1, { alpha: 1 }, 0)
+            .to(bgFront, 1, { alpha: 0 }, 0)
+            .set(smallTitle, { alpha: 1 }, 1)
+            .set(largeTitle, { alpha: 0 }, 1);
+
+        var shadowAnimation = TweenLite.to(header, 0.4, {
+            boxShadow: "0 2px 5px rgba(0,0,0,0.6)",
+            ease: Power1.easeOut
+        }).reverse();
+
+        var progress = 0;
+        var requestId = null;
+        var reversed = true;
+
+        //cloneCards(25);
+        update();
+        window.addEventListener("scroll", requestUpdate);
+
+        function requestUpdate() {
+            if (!requestId) {
+                requestId = requestAnimationFrame(update);
+            }
+        }
+
+        function update() {
+
+            var scroll = window.pageYOffset;
+
+            if (scroll < deltaHeight) {
+                progress = scroll < 0 ? 0 : scroll / deltaHeight;
+                reversed = true;
+            } else {
+                progress = 1;
+                reversed = false;
+            }
+
+            headerAnimation.progress(progress);
+            shadowAnimation.reversed(reversed);
+
+            requestId = null;
+        }
+
+        function cloneCards(count) {
+
+            var main = document.querySelector("main");
+            var card = document.querySelector(".card");
+
+            for (var i = 0; i < count; i++) {
+                main.appendChild(card.cloneNode(true));
+            }
+        }
+    </script>
+    <script>
+        var btnload = document.getElementById("load");
+        var txt = document.getElementById("txtI");
+        var load = document.getElementById("load-content");
+        btnload.addEventListener("click", (evt) => {
+            //console.log(txt.value);
+            if (!txt.value) {
+                alert('enter some training content in the textarea');
+                return;
+            }
+            var lines = (txt.value || '').split(/\r?\n|\r|\n/g);
+            load.innerHTML = '';
+            var bild = `<table class="flat-table" style='width:100%;text-align: left;'>
+                                                                                                                    <caption>Immanuel's Experiment for Classification</caption>
+                                                                                                                    <thead>
+                                                                                                                        <tr>
+                                                                                                                            <th style='max-width:80%;'>Text</th>
+                                                                                                                            <th style='max-width:20%;'>Tag</th>
+                                                                                                                        </tr>
+                                                                                                                    </thead>
+                                                                                                                    <tbody id='tbl-cont'></tbody></table>`;
+            load.appendChild(ark_util.textToDom(bild));
+            var cont = document.getElementById('tbl-cont');
+            lines.forEach(t => {
+                t = (t || '').replaceAll(',', ' ');
+                if (t) {
+                    t = t.replaceAll(',', ' ');
+                    cont.appendChild(ark_util.textToDom(`<tr><td>${t}</td><td><input style="height:40px;" type='text'></td></tr>`))
+                }
+            });
+            load.appendChild(ark_util.textToDom(`<br />`));
+            load.appendChild(ark_util.textToDom(`<br />`));
+            load.appendChild(ark_util.textToDom(`<input style="height:40px; width:25%;margin: 0 10px 0 10px;" type='text' id='mdl-name' placeholder='model name' />`));
+            load.appendChild(ark_util.textToDom(`<select id='selct-alg'><option value="ova" selected>OVAAveragedPerceptronTrainer </option><option value="sdca"">SdcaMultiClassTrainer</option></select>`));
+            load.appendChild(ark_util.textToDom(`<a id='md-lnk' target='_blank' href='https://michaelkarpe.github.io/machine-learning-projects/sdca/'><img src='/img/more-details.png' width='200'></a>`));
+            load.appendChild(ark_util.textToDom(`<button style="height:40px; width:25%;margin: 0 0px 0 10px;" id='start-train'>Start Training</button>`));
+            var train = document.getElementById("start-train");
+            train.addEventListener("click", (evt) => {
+                evt.preventDefault();
+                var dd = [...cont.querySelectorAll('tr')].map(t => {
+                    return { Text: t.querySelector('td:nth-child(1)').innerHTML, Tag: t.querySelector('td:nth-child(2) input').value }
+                })
+                console.log(dd);
+                var mdlname = document.getElementById("mdl-name");
+                var mdlalg = document.getElementById("selct-alg");
+                //api.postJson(`/ark/class/train/${mdlalg.value}/${mdlname.value}`, dd);
+                fetch(`/ark/class/train/${mdlalg.value}/${mdlname.value}`,
+                    {
+                        method: 'post',
+                        body: JSON.stringify(dd),
+                        mode: 'cors', 
+                        cache: 'no-cache', 
+                        credentials: 'same-origin', 
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        window.location.reload();
+                        console.log('Success:', result);
+                    })
+                    .catch(error => {
+                        alert('Error in Generating Model');
+                        console.error('Error:', error);
+                    });;
+            })
+        });
+        $(document).on("click", ".btn-check", function (ev) {
+            $(ev.target.closest('.thumbnail')).find('.lead').html('');
+            var fd = new FormData();
+            fd.append("text", $(ev.target.closest('.thumbnail')).find('.test-text').val());
+            fd.append("model_path", $(ev.target.closest('.thumbnail')).find('.model-path').val());
+            fetch(`/ark/class/predict`, { method: 'post', body: fd })
+                .then(response => response.json())
+                .then(result => {
+                    $(ev.target.closest('.thumbnail')).find('.lead').html(`${result.prediction} (${result.score})`);
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+        $(document).on("change", "#selct-alg", (evt) => {
+            if ($(evt.target).val() == 'ova')
+                $("#md-lnk").attr("href", 'https://machinelearningmastery.com/one-vs-rest-and-one-vs-one-for-multi-class-classification/');
+            else
+                $("#md-lnk").attr("href", 'https://michaelkarpe.github.io/machine-learning-projects/sdca/');
+        })
+    </script>
+</body>
+</html>

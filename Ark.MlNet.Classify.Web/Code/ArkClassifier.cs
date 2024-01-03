@@ -11,6 +11,13 @@ namespace Ark.MlNet.Classify
         [LoadColumn(1)]
         public string Tag { get; set; }
     }
+    public class ClassifyPrediction
+    {
+        [ColumnName("PredictedLabel")]
+        public string Classification;
+
+        public float[] Score;
+    }
     public enum MyTrainerStrategy : int
     {
         SdcaMultiClassTrainer = 1,
@@ -18,16 +25,15 @@ namespace Ark.MlNet.Classify
     };
     public class ArkClassifier
     {
-        public static void Predict()
+        public static (string tag, float? score) Predict(string mode_path, string text)
         {
             var mlContext = new MLContext(seed: 1);
             DataViewSchema modelSchema;
-            ITransformer trainedModel = mlContext.Model.Load("./MLModels/Jobss_v1_Model.zip", out modelSchema);
-            //var issue = new ClassifyModel() { KeySkill = "WebSockets communication is slow in my machine", RoleCategory = "The WebSockets communication used under the covers by SignalR looks like is going slow in my development machine.." };
-            // Create prediction engine related to the loaded trained model
-            //var predEngine = mlContext.Model.CreatePredictionEngine<ResumeLabel, ResumePrediction>(trainedModel);
-            //Score
-            //var prediction = predEngine.Predict(issue);
+            ITransformer trainedModel = mlContext.Model.Load(mode_path, out modelSchema);
+            var issue = new ClassifyModel() { Text = text };
+            var predEngine = mlContext.Model.CreatePredictionEngine<ClassifyModel, ClassifyPrediction>(trainedModel);
+            var prediction = predEngine.Predict(issue);
+            return (prediction.Classification, prediction.Score?[0]);
             //Console.WriteLine($"=============== Single Prediction just-trained-model - Result: {prediction.JobTitle}, Score: {prediction.Score}  ===============");
         }
         public static void BuildAndTrainModel(MyTrainerStrategy selectedStrategy, string path)

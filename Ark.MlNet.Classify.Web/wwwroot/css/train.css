@@ -1,0 +1,233 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+    line-height: 1.4;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+    font-family: Roboto, sans-serif;
+}
+
+main {
+    padding-top: 300px;
+    font-family: arial;
+    background: #eee;
+    min-height: 100%;
+}
+
+.app-header {
+    display: block;
+    background: #3f51b5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    height: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+}
+
+.header-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.app-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    height: 64px;
+    padding: 0 16px;
+    pointer-events: none;
+    font-size: 20px;
+}
+
+#large-toolbar {
+    position: absolute;
+    bottom: 0;
+    transform-origin: left top;
+    margin-bottom: 24px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.small-title,
+.large-title {
+    transform-origin: left top;
+    white-space: nowrap;
+    flex: 1;
+    flex-basis: 1e-9px;
+    overflow: hidden;
+    font-weight: 400;
+    line-height: 1.5;
+    position: relative;
+}
+
+.small-title {
+    margin-left: 14px;
+    opacity: 0;
+}
+
+.large-title {
+    will-change: transform, opacity;
+    font-size: 56px;
+    font-size: 2em;
+    margin-left: 64px;
+}
+
+.icon-button {
+    display: inline-block;
+    position: relative;
+    padding: 6px;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 0;
+    line-height: 1;
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box !important;
+}
+
+    .icon-button .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        vertical-align: middle;
+        fill: currentcolor;
+        stroke: none;
+        width: 100%;
+        height: 100%;
+    }
+
+.background-container {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.background {
+    pointer-events: none;
+    position: absolute;
+    background-size: cover;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    will-change: transform, opacity;
+}
+
+#background-back {
+    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/mountain-02.jpg);
+    background-position: left center;
+    opacity: 0;
+}
+
+#background-front {
+    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/mountain-01.jpg);
+    background-position: left center;
+}
+
+.card {
+    padding: 16px;
+    margin: 24px;
+    border-radius: 2px;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.87);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+    .card .card-title {
+        padding: 24px 16px 8px;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 32px;
+    }
+
+    .card p {
+        font-size: 1.6rem;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        line-height: 1.6em;
+        padding: 0 16px;
+    }
+
+:root {
+    --arrow-bg: rgba(255, 255, 255, 0.3);
+    --arrow-icon: url(/img/da.svg);
+    --option-bg: white;
+    --select-bg: rgba(255, 255, 255, 0.2);
+}
+
+
+select#selct-alg {
+    /* Reset */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    /* Personalize */
+    width: 30rem;
+    padding: 1rem 4rem 1rem 1rem;
+    background: var(--arrow-icon) no-repeat right 0.8em center/1.4em, linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em);
+    color: black;
+    border-radius: 0.25em;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    margin: 0 10px 0 10px;
+    /* Remove IE arrow */
+    /* Remove focus outline */
+    /* <option> colors */
+}
+
+    select#selct-alg::-ms-expand {
+        display: none;
+    }
+
+    select#selct-alg:focus {
+        outline: none;
+    }
+
+    select#selct-alg option {
+        color: inherit;
+        background-color: var(--option-bg);
+    }
+
+.flat-table {
+    display: block;
+    font-family: sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 115%;
+    overflow: auto;
+    width: auto;
+}
+
+    .flat-table th {
+        background-color: #70c469;
+        color: white;
+        font-weight: normal;
+        padding: 20px 30px;
+        text-align: center;
+    }
+
+    .flat-table td {
+        background-color: #eeeeee;
+        color: #6f6f6f;
+        padding: 20px 30px;
+    }
