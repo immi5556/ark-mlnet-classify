@@ -63,8 +63,8 @@ namespace Ark.MlNet.Classify.Web.Controllers
             });
             MyTrainerStrategy algorithm = (alg ?? "ova") == "ova" ? MyTrainerStrategy.OVAAveragedPerceptronTrainer : MyTrainerStrategy.SdcaMultiClassTrainer;
             var path = $"./Data/{model_name}/{ark.net.util.DateUtil.CurrentTimeStamp()}.csv";
-            FileUtil.Save(path, content.ToString());
-            FileUtil.Save(FileUtil.AppendToFileName(path, "tags", ".json"), System.Text.Json.JsonSerializer.Serialize(new { tags = dics.Keys.ToList(), alg = alg, algorithm = algorithm }));
+            System.IO.File.WriteAllText(path, content.ToString());
+            System.IO.File.WriteAllText(FileUtil.AppendToFileName(path, "tags", ".json"), System.Text.Json.JsonSerializer.Serialize(new { tags = dics.Keys.ToList(), alg = alg, algorithm = algorithm }));
             ArkClassifier.BuildAndTrainModel(algorithm, path);
             return new
             {

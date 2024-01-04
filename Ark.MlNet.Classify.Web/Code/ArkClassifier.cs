@@ -63,7 +63,8 @@ namespace Ark.MlNet.Classify
             var trainingPipeline = dataProcessPipeline.Append(trainer)
                     .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel"));
             var trainedModel = trainingPipeline.Fit(trainingDataView);
-            mlContext.Model.Save(trainedModel, trainingDataView.Schema, FileUtil.CreateFileSequence(FileUtil.AppendToFileName(path, "model", ".zip")));
+            //mlContext.Model.Save(trainedModel, trainingDataView.Schema, FileUtil.CreateFileSequence(FileUtil.AppendToFileName(path, "model", ".zip")));
+            mlContext.Model.Save(trainedModel, trainingDataView.Schema, FileUtil.AppendToFileName(path, "model", ".zip"));
         }
     }
 }
